@@ -13,43 +13,51 @@
     font-family:'Segoe UI',sans-serif;
 }
 
-/* ===== Background + Floating Hearts ===== */
+/* ===== DARK BACKGROUND ===== */
 body{
     min-height:100vh;
-    background:linear-gradient(135deg,#ff6a88,#ff99ac);
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     display:flex;
     flex-direction:column;
     overflow-x:hidden;
+    color:white;
 }
 
-/* Floating hearts */
+/* ===== LIGHT FLOATING HEARTS ===== */
 .heart{
     position:fixed;
     bottom:-50px;
     font-size:20px;
-    color:rgba(255,255,255,0.4);
+    color:rgba(255,255,255,0.9);
+    text-shadow:0 0 10px rgba(255,255,255,0.8);
     animation:floatUp linear infinite;
+    pointer-events:none;
 }
 
 @keyframes floatUp{
-    0%{ transform:translateY(0) scale(1); opacity:0.6; }
-    100%{ transform:translateY(-110vh) scale(1.5); opacity:0; }
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0.8;
+    }
+    100%{
+        transform:translateY(-110vh) scale(1.6);
+        opacity:0;
+    }
 }
 
-/* ===== Header ===== */
+/* ===== HEADER ===== */
 header{
-    background:white;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(10px);
     padding:15px;
     text-align:center;
     font-weight:bold;
     font-size:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-    position:sticky;
-    top:0;
-    z-index:10;
+    color:#ff9ecb;
+    box-shadow:0 5px 15px rgba(0,0,0,0.4);
 }
 
-/* ===== Layout Grid ===== */
+/* ===== LAYOUT ===== */
 .container{
     flex:1;
     display:grid;
@@ -58,27 +66,35 @@ header{
     padding:15px;
 }
 
-/* ===== Sidebars ===== */
+/* ===== SIDEBARS ===== */
 .sidebar{
-    background:rgba(255,255,255,0.7);
-    backdrop-filter:blur(10px);
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
     border-radius:20px;
     padding:15px;
+    backdrop-filter:blur(15px);
 }
 
-/* ===== Main App ===== */
+/* ===== MAIN APP ===== */
 .app{
-    background:white;
+    background:rgba(255,255,255,0.08);
     border-radius:25px;
     padding:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.1);
 }
 
 textarea{
     width:100%;
     padding:10px;
     border-radius:15px;
-    border:1px solid #ddd;
+    border:none;
+    background:rgba(255,255,255,0.1);
+    color:white;
+}
+
+textarea::placeholder{
+    color:#ccc;
 }
 
 button{
@@ -87,17 +103,17 @@ button{
     border:none;
     border-radius:20px;
     cursor:pointer;
-    background:#ff4d6d;
+    background:#ff4d9d;
     color:white;
     transition:0.3s;
 }
 
 button:hover{
-    background:#ff1f4b;
+    background:#ff1f7a;
 }
 
 .message{
-    background:#ffe6ea;
+    background:rgba(255,255,255,0.1);
     padding:10px;
     border-radius:15px;
     margin-top:10px;
@@ -116,24 +132,25 @@ button:hover{
 }
 
 .featured{
-    background:#fff3cd;
+    background:rgba(255,77,157,0.2);
     padding:10px;
     border-radius:15px;
     margin-bottom:15px;
     text-align:center;
     font-weight:bold;
+    border:1px solid rgba(255,255,255,0.2);
 }
 
-/* ===== Footer ===== */
+/* ===== FOOTER ===== */
 footer{
-    background:white;
-    text-align:center;
+    background:rgba(0,0,0,0.6);
     padding:10px;
+    text-align:center;
     font-size:14px;
-    box-shadow:0 -5px 15px rgba(0,0,0,0.1);
+    color:#ff9ecb;
 }
 
-/* ===== Responsive ===== */
+/* ===== RESPONSIVE ===== */
 @media(max-width:900px){
     .container{
         grid-template-columns:1fr;

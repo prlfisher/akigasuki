@@ -1,181 +1,261 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Love Confessions ??</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Confessions 💖</title>
 
-        <style>
-            *  margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; 
-            body {
-                    background: linear-gradient(135deg,#ff6a88,#ff99ac);
-                        min-height:100vh;
-                            display:flex;
-                                justify-content:center;
-                                    padding:20px;
-                                    }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
 
-                                    .app {
-                                            background:white;
-                                                width:100%;
-                                                    max-width:500px;
-                                                        border-radius:25px;
-                                                            padding:20px;
-                                                                box-shadow:0 15px 40px rgba(0,0,0,0.3);
-                                    }
+/* ===== Background + Floating Hearts ===== */
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#ff6a88,#ff99ac);
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+}
 
-                                    h1  text-align:center; margin-bottom:10px; 
-                                    textarea {
-                                            width:100%;
-                                                padding:10px;
-                                                    border-radius:15px;
-                                                        border:1px solid #ddd;
-                                                        }
+/* Floating hearts */
+.heart{
+    position:fixed;
+    bottom:-50px;
+    font-size:20px;
+    color:rgba(255,255,255,0.4);
+    animation:floatUp linear infinite;
+}
 
-                                                        button {
-                                                                margin-top:8px;
-                                                                    padding:8px 12px;
-                                                                        border:none;
-                                                                            border-radius:20px;
-                                                                                cursor:pointer;
-                                                                                    background:#ff4d6d;
-                                                                                        color:white;
-                                                                                        }
+@keyframes floatUp{
+    0%{ transform:translateY(0) scale(1); opacity:0.6; }
+    100%{ transform:translateY(-110vh) scale(1.5); opacity:0; }
+}
 
-                                                                                        .message {
-                                                                                                background:#ffe6ea;
-                                                                                                    padding:10px;
-                                                                                                        border-radius:15px;
-                                                                                                            margin-top:10px;
-                                                                                                                position:relative;
-                                                                                                                }
+/* ===== Header ===== */
+header{
+    background:white;
+    padding:15px;
+    text-align:center;
+    font-weight:bold;
+    font-size:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
 
-                                                                                                                .actions {
-                                                                                                                        margin-top:5px;
-                                                                                                                            display:flex;
-                                                                                                                                <gap:10>}
-                                                                                                                                
-                                                                                                                                .featured {
-                                                                                                                                        background:#fff3cd;
-                                                                                                                                            padding:10px;
-                                                                                                                                                border-radius:15px;
-                                                                                                                                                    margin-bottom:15px;
-                                                                                                                                                        text-align:center;
-                                                                                                                                                            font-weight:bold;
-                                                                                                                                                            }
-                                                                                                                                                            </style>
-                                                                                                                                                            </head>
-                                                                                                                                                            <body>
-                                                                                                                                                            
-                                                                                                                                                            <div class="app">
-                                                                                                                                                                <h1>?? Love Confessions</h1>
-                                                                                                                                                                
-                                                                                                                                                                    <div id="featuredBox" class="featured">
-                                                                                                                                                                            ?? Daily Featured Confession Loading...
-                                                                                                                                                                                </div>
-                                                                                                                                                                                
-                                                                                                                                                                                    <textarea id="input" rows="3" placeholder="Write your confession..."></textarea>
-                                                                                                                                                                                        <button onclick="postConfession()">Post ??</button>
-                                                                                                                                                                                        
-                                                                                                                                                                                            <div id="messages"></div>
-                                                                                                                                                                                            </div>
-                                                                                                                                                                                            
-                                                                                                                                                                                            <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-                                                                                                                                                                                            <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-                                                                                                                                                                                            
-                                                                                                                                                                                            <script>
-                                                                                                                                                                                            // ?? PUT YOUR FIREBASE CONFIG HERE
-                                                                                                                                                                                            const firebaseConfig = {
-                                                                                                                                                                                              apiKey: "AIzaSyAVwHUPpyJPQBgvJE43DIDap0gQM-0oJHc",
-                                                                                                                                                                                                authDomain: "akiga-suki.firebaseapp.com",
-                                                                                                                                                                                                  databaseURL: "https://akiga-suki-default-rtdb.firebaseio.com",
-                                                                                                                                                                                                    projectId: "akiga-suki"
-                                                                                                                                                                                                    };
-                                                                                                                                                                                                    
-                                                                                                                                                                                                    firebase.initializeApp(firebaseConfig);
-                                                                                                                                                                                                    const db = firebase.database();
-                                                                                                                                                                                                    
-                                                                                                                                                                                                    // ===== POST CONFESSION =====
-                                                                                                                                                                                                    function postConfession() {
-                                                                                                                                                                                                        const text = document.getElementById("input").value;
-                                                                                                                                                                                                            if (!text.trim()) return;
-                                                                                                                                                                                                            
-                                                                                                                                                                                                                db.ref("confessions").push({
-                                                                                                                                                                                                                        message: text,
-                                                                                                                                                                                                                                likes: 0,
-                                                                                                                                                                                                                                        time: Date.now()
-                                                                                                                                                                                                                                            });
-                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                document.getElementById("input").value = "";
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                // ===== DISPLAY CONFESSIONS =====
-                                                                                                                                                                                                                                                db.ref("confessions").limitToLast(50).on("child_added", snap => {
-                                                                                                                                                                                                                                                    const data = snap.val();
-                                                                                                                                                                                                                                                        const key = snap.key;
-                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                            const div = document.createElement("div");
-                                                                                                                                                                                                                                                                div.className = "message";
-                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                    div.innerHTML = `
-                                                                                                                                                                                                                                                                            <div>${data.message}</div>
-                                                                                                                                                                                                                                                                                    <div class="actions">
-                                                                                                                                                                                                                                                                                                <button onclick="like('${key}', ${data.likes})">❤️ ${data.likes}</button>
-                                                                                                                                                                                                                                                                                                            <button onclick="reply('${data.message}')">?? AI Reply</button>
-                                                                                                                                                                                                                                                                                                                        <button onclick="deletePost('${key}')">?? Admin</button>
-                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                        <div id="reply-${key}" style="margin-top:5px;color:#555;"></div>
-                                                                                                                                                                                                                                                                                                                                            `;
-                                                                                                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                                                                                                document.getElementById("messages").prepend(div);
-                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                // ===== LIKE SYSTEM =====
-                                                                                                                                                                                                                                                                                                                                                function like(id, currentLikes) {
-                                                                                                                                                                                                                                                                                                                                                    db.ref("confessions/" + id).update({
-                                                                                                                                                                                                                                                                                                                                                            likes: currentLikes + 1
-                                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                                // ===== SIMPLE AI LOVE REPLY =====
-                                                                                                                                                                                                                                                                                                                                                                function reply(text) {
-                                                                                                                                                                                                                                                                                                                                                                    const replies = [
-                                                                                                                                                                                                                                                                                                                                                                            "That is so beautiful ??",
-                                                                                                                                                                                                                                                                                                                                                                                    "Someone out there feels lucky because of you.",
-                                                                                                                                                                                                                                                                                                                                                                                            "Love always finds its way ❤️",
-                                                                                                                                                                                                                                                                                                                                                                                                    "Your heart speaks so softly and deeply."
-                                                                                                                                                                                                                                                                                                                                                                                                        ];
-                                                                                                                                                                                                                                                                                                                                                                                                            alert(replies[Math.floor(Math.random()*replies.length)]);
-                                                                                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                                                                                                                                                            // ===== DAILY FEATURED =====
-                                                                                                                                                                                                                                                                                                                                                                                                            db.ref("confessions").limitToLast(20).once("value", snap => {
-                                                                                                                                                                                                                                                                                                                                                                                                                const list = [];
-                                                                                                                                                                                                                                                                                                                                                                                                                    snap.forEach(child => list.push(child.val().message));
-                                                                                                                                                                                                                                                                                                                                                                                                                        if (list.length > 0) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                const today = new Date().getDate();
-                                                                                                                                                                                                                                                                                                                                                                                                                                        const pick = list[today % list.length];
-                                                                                                                                                                                                                                                                                                                                                                                                                                                document.getElementById("featuredBox").innerText =
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            "?? Daily Featured:\n" + pick;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                // ===== ADMIN DELETE (Simple Password Protection) =====
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                function deletePost(id) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                    const pass = prompt("Enter admin password:");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (pass === "admin123") {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                db.ref("confessions/" + id).remove();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        alert("Deleted");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                location.reload();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </script>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </html></gap:10>
-                                                                                                                }
-                                                                                        }
-                                                        }
-                                    }
-                                    }
-            }
+/* ===== Layout Grid ===== */
+.container{
+    flex:1;
+    display:grid;
+    grid-template-columns:200px 1fr 200px;
+    gap:15px;
+    padding:15px;
+}
+
+/* ===== Sidebars ===== */
+.sidebar{
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(10px);
+    border-radius:20px;
+    padding:15px;
+}
+
+/* ===== Main App ===== */
+.app{
+    background:white;
+    border-radius:25px;
+    padding:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+textarea{
+    width:100%;
+    padding:10px;
+    border-radius:15px;
+    border:1px solid #ddd;
+}
+
+button{
+    margin-top:8px;
+    padding:8px 15px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    background:#ff4d6d;
+    color:white;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#ff1f4b;
+}
+
+.message{
+    background:#ffe6ea;
+    padding:10px;
+    border-radius:15px;
+    margin-top:10px;
+    animation:fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.actions{
+    margin-top:5px;
+    display:flex;
+    gap:10px;
+}
+
+.featured{
+    background:#fff3cd;
+    padding:10px;
+    border-radius:15px;
+    margin-bottom:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* ===== Footer ===== */
+footer{
+    background:white;
+    text-align:center;
+    padding:10px;
+    font-size:14px;
+    box-shadow:0 -5px 15px rgba(0,0,0,0.1);
+}
+
+/* ===== Responsive ===== */
+@media(max-width:900px){
+    .container{
+        grid-template-columns:1fr;
+    }
+    .sidebar{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>💖 Love Confessions</header>
+
+<div class="container">
+    
+    <div class="sidebar">
+        💌 Spread love <br><br>
+        ❤️ Be kind <br>
+        🌸 Stay soft
+    </div>
+
+    <div class="app">
+        <div id="featuredBox" class="featured">
+            💌 Daily Featured Confession Loading...
+        </div>
+
+        <textarea id="input" rows="3" placeholder="Write your confession..."></textarea>
+        <button onclick="postConfession()">Post 💌</button>
+
+        <div id="messages"></div>
+    </div>
+
+    <div class="sidebar">
+        🌹 Anonymous space <br><br>
+        ✨ Positive vibes only
+    </div>
+
+</div>
+
+<footer>
+    Made with ❤️ | Love Confessions 2026
+</footer>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAVwHUPpyJPQBgvJE43DIDap0gQM-0oJHc",
+  authDomain: "akiga-suki.firebaseapp.com",
+  databaseURL: "https://akiga-suki-default-rtdb.firebaseio.com",
+  projectId: "akiga-suki"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+/* ===== Floating Hearts Generator ===== */
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(4+Math.random()*4)+"s";
+    heart.style.fontSize=(15+Math.random()*20)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),8000);
+}
+setInterval(createHeart,800);
+
+/* ===== Post Confession ===== */
+function postConfession(){
+    const text=document.getElementById("input").value;
+    if(!text.trim()) return;
+
+    db.ref("confessions").push({
+        message:text,
+        likes:0,
+        time:Date.now()
+    });
+
+    document.getElementById("input").value="";
+}
+
+/* ===== Display ===== */
+db.ref("confessions").limitToLast(50).on("child_added",snap=>{
+    const data=snap.val();
+    const key=snap.key;
+
+    const div=document.createElement("div");
+    div.className="message";
+
+    div.innerHTML=`
+        <div>${data.message}</div>
+        <div class="actions">
+            <button onclick="like('${key}',${data.likes})">❤️ ${data.likes}</button>
+            <button onclick="deletePost('${key}')">🗑 Admin</button>
+        </div>
+    `;
+
+    document.getElementById("messages").prepend(div);
+});
+
+/* ===== Like ===== */
+function like(id,currentLikes){
+    db.ref("confessions/"+id).update({
+        likes:currentLikes+1
+    });
+}
+
+/* ===== Delete ===== */
+function deletePost(id){
+    const pass=prompt("Enter admin password:");
+    if(pass==="admin123"){
+        db.ref("confessions/"+id).remove();
+        location.reload();
+    }
+}
+</script>
+
+</body>
+</html>

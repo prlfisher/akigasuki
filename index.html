@@ -7,12 +7,16 @@
 
 <style>
 
+/* RESET */
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Segoe UI,sans-serif;
 }
+
+/* BODY */
 
 body{
 background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
@@ -31,7 +35,6 @@ align-items:center;
 justify-content:center;
 font-size:32px;
 font-weight:bold;
-color:white;
 
 background-image:url("banner.jpg");
 background-size:120% auto;
@@ -41,7 +44,7 @@ background-repeat:no-repeat;
 box-shadow:0 6px 20px rgba(0,0,0,0.6);
 }
 
-/* MESSAGE */
+/* HOME MESSAGE */
 
 .homeMessage{
 text-align:center;
@@ -61,7 +64,7 @@ gap:20px;
 padding:20px;
 }
 
-/* SIDEBARS */
+/* SIDEBAR */
 
 .sidebar{
 background:rgba(255,255,255,0.06);
@@ -80,7 +83,7 @@ border-bottom:1px solid rgba(255,255,255,0.1);
 color:#ff9ecb;
 }
 
-/* MAIN */
+/* MAIN CONTENT */
 
 .app{
 background:rgba(255,255,255,0.08);
@@ -104,12 +107,14 @@ margin-top:10px;
 /* COMMENT BOX */
 
 .commentBox{
-margin:25px auto 0 auto;
+margin:25px auto 0;
 max-width:500px;
 }
+
 #name{
 width:50%;
 }
+
 input,textarea{
 width:100%;
 padding:10px;
@@ -167,9 +172,8 @@ opacity:0.15;
 font-size:12px;
 }
 
-#adminBtn:hover{
-opacity:1;
-}
+#adminBtn:hover{opacity:1;}
+
 #logoutBtn{
 position:absolute;
 right:50px;
@@ -179,9 +183,8 @@ font-size:12px;
 display:none;
 }
 
-#logoutBtn:hover{
-opacity:1;
-}
+#logoutBtn:hover{opacity:1;}
+
 /* MOBILE MENU */
 
 .hamburger{
@@ -192,24 +195,11 @@ right:15px;
 font-size:26px;
 cursor:pointer;
 }
-#mobilePostList{
-display:none;
-max-width:600px;
-margin:auto;
-padding:15px;
-}
 
-@media(max-width:900px){
-
-#mobilePostList{
-display:block;
-}
-
-}
 .mobileMenu{
 position:fixed;
 top:0;
-right:-260px;   /* hidden off screen */
+right:-260px;
 width:240px;
 height:100%;
 background:#111;
@@ -217,11 +207,19 @@ padding:20px;
 transition:right 0.35s ease;
 z-index:1000;
 }
+
 .mobileMenu.open{
 right:0;
 }
 
-/* MOBILE */
+#mobilePostList{
+display:none;
+max-width:600px;
+margin:auto;
+padding:15px;
+}
+
+/* RESPONSIVE */
 
 @media(max-width:900px){
 
@@ -238,6 +236,10 @@ font-size:18px;
 }
 
 .hamburger{
+display:block;
+}
+
+#mobilePostList{
 display:block;
 }
 
@@ -262,7 +264,9 @@ Be kind with words.
 <div class="homeMessage">
 Words left unsaid often stay the longest in the heart.
 </div>
+
 <div id="mobilePostList"></div>
+
 <div class="container">
 
 <div class="sidebar">
@@ -272,19 +276,21 @@ Words left unsaid often stay the longest in the heart.
 
 <div class="app">
 
-<div id="postContent">
-Select a post to read.
-</div>
+<div id="postContent">Select a post to read.</div>
 
 <div id="comments"></div>
+
 <div class="commentBox">
 <input id="name" placeholder="Your name">
 <textarea id="commentText" placeholder="Write comment"></textarea>
-<!-- hidden anti-spam field -->
+
 <input id="website" style="display:none">
-<button onclick="postComment()">Send</button>
+
+<button onclick="postComment()">Comment/コメント</button>
 </div>
+
 </div>
+
 <div class="sidebar">
 <h3>Message</h3>
 <p>
@@ -292,8 +298,11 @@ This place is for feelings left unsaid.<br><br>
 Be kind with words.
 </p>
 </div>
+
 </div>
+
 <footer>
+
 Made with 🖤 | 告白 2026
 
 <button id="adminBtn" onclick="adminLogin()">+</button>
@@ -306,7 +315,6 @@ Made with 🖤 | 告白 2026
 <h3>Create Post</h3>
 
 <input id="postTitle" placeholder="Post title">
-
 <textarea id="postBody" rows="6" placeholder="Write post..."></textarea>
 
 <button onclick="publishPost()">Publish</button>
@@ -330,89 +338,60 @@ firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
 
 let currentPost=null;
-let isAdmin=false;
-/* restore admin session */
-
-if(localStorage.getItem("admin")==="true"){
-isAdmin=true;
-}
+let isAdmin=localStorage.getItem("admin")==="true";
 let commentListener=null;
-let pageLoaded = Date.now();
+let pageLoaded=Date.now();
 
-/*BANNED WORDS*/
-const bannedWords = [
-"fuck",
-"shit",
-"bitch",
-"asshole",
-"http://",
-"https://",
-"www."
+/* BANNED WORD FILTER */
+
+const bannedWords=[
+"fuck","shit","bitch","asshole",
+"http://","https://","www."
 ];
+
 function containsBannedWord(text){
-
-const lower = text.toLowerCase();
-
-for(let word of bannedWords){
-
-if(lower.includes(word)){
-return true;
+const lower=text.toLowerCase();
+return bannedWords.some(word=>lower.includes(word));
 }
 
-}
-
-return false;
-
-}
 /* MOBILE MENU */
 
 function toggleMenu(){
-
-const menu=document.getElementById("mobileMenu");
-
-menu.classList.toggle("open");
-
+document.getElementById("mobileMenu").classList.toggle("open");
 }
 
-/* ADMIN LOGIN */
+/* ADMIN */
 
 function adminLogin(){
 
 const user=prompt("Username");
 const pass=prompt("Password");
 
-if(user==="badmin" && pass==="Temp123@akigasuki"){
+if(user==="******" && pass==="******"){
 
 isAdmin=true;
-
-/* save login */
 localStorage.setItem("admin","true");
 
 document.getElementById("editor").style.display="block";
 
 }else{
-
 alert("Wrong login");
+}
 
 }
+
+function adminLogout(){
+
+localStorage.removeItem("admin");
+isAdmin=false;
+
+alert("Admin logged out");
+location.reload();
 
 }
 
 function closeEditor(){
 document.getElementById("editor").style.display="none";
-}
-
-/*ADMIN LOGOUT*/
-function adminLogout(){
-
-localStorage.removeItem("admin");
-
-isAdmin=false;
-
-alert("Admin logged out");
-
-location.reload();
-
 }
 
 /* CREATE POST */
@@ -422,15 +401,15 @@ function publishPost(){
 const title=document.getElementById("postTitle").value;
 const content=document.getElementById("postBody").value;
 
-if(!title||!content)return;
+if(!title||!content) return;
 
 const featured=confirm("Make this a featured post?");
 
 db.ref("posts").push({
-title:title,
-content:content,
+title,
+content,
 time:Date.now(),
-featured:featured
+featured
 });
 
 closeEditor();
@@ -439,34 +418,32 @@ closeEditor();
 
 /* LOAD POSTS */
 
-/* FIXED LOAD POSTS */
-db.ref("posts").limitToLast(50).on("child_added", snap => {
-    const data = snap.val();
-    const key = snap.key;
+db.ref("posts").limitToLast(50).on("child_added", snap=>{
 
-    // Create the function that both desktop and mobile will use
-    const createPostElement = () => {
-        const div = document.createElement("div");
-        div.className = "postItem";
-        div.innerText = data.featured ? "⚲" + data.title : data.title;
-        div.onclick = () => loadPost(key); // Re-assigning the click event
-        return div;
-    };
+const data=snap.val();
+const key=snap.key;
 
-    const desktopDiv = createPostElement();
-    const mobileDiv = createPostElement(); // Create a fresh one for mobile
+const createPost=()=>{
 
-    // Add to Desktop
-    if (data.featured) {
-        document.getElementById("postList").prepend(desktopDiv);
-    } else {
-        document.getElementById("postList").appendChild(desktopDiv);
-    }
+const div=document.createElement("div");
+div.className="postItem";
+div.innerText=data.featured ? "📌"+data.title : data.title;
+div.onclick=()=>loadPost(key);
 
-    // Add EVERY post to Mobile (Featured or not)
-    document.getElementById("mobilePostList").appendChild(mobileDiv);
+return div;
+
+};
+
+const desktop=createPost();
+const mobile=createPost();
+
+const list=document.getElementById("postList");
+const mobileList=document.getElementById("mobilePostList");
+
+data.featured ? list.prepend(desktop) : list.appendChild(desktop);
+data.featured ? mobileList.prepend(mobile) : mobileList.appendChild(mobile);
+
 });
-
 
 /* LOAD POST */
 
@@ -489,9 +466,7 @@ document.getElementById("postContent").innerHTML=`
 
 <h2>${data.title}</h2>
 <small>${date.toLocaleString()}</small>
-
 <p style="margin-top:10px">${data.content}</p>
-
 <div style="margin-top:15px">${adminControls}</div>
 
 `;
@@ -525,29 +500,23 @@ const name=document.getElementById("name").value;
 const text=document.getElementById("commentText").value;
 const botTrap=document.getElementById("website").value;
 
-/* honeypot bot protection */
-if(botTrap!=""){
-console.log("Bot blocked");
-return;
-}
+if(botTrap!=="") return;
 
-/* delay protection */
-if(Date.now()-pageLoaded < 3000){
+if(Date.now()-pageLoaded<3000){
 alert("Please wait a moment before commenting.");
 return;
 }
 
-/* banned word filter */
 if(containsBannedWord(text)){
 alert("Your comment contains blocked words.");
 return;
 }
 
-if(!name || !text) return;
+if(!name||!text) return;
 
 db.ref("comments/"+currentPost).push({
-name:name,
-text:text,
+name,
+text,
 time:Date.now()
 });
 
@@ -555,6 +524,7 @@ document.getElementById("commentText").value="";
 document.getElementById("name").value="";
 
 }
+
 /* LOAD COMMENTS */
 
 function loadComments(id){
@@ -596,31 +566,37 @@ if(!confirm("Delete comment?")) return;
 db.ref("comments/"+post+"/"+comment).remove();
 
 }
-/*ADMIN LOGOUT*/
+
+/* ADMIN UI */
+
 if(isAdmin){
-
 document.getElementById("logoutBtn").style.display="inline-block";
-
 }
-/*MOBILE HAMBURGER CLOSING*/
-document.addEventListener("click", function(event){
+
+/* CLOSE MOBILE MENU */
+
+document.addEventListener("click",e=>{
 
 const menu=document.getElementById("mobileMenu");
 const button=document.querySelector(".hamburger");
 
-if(!menu.contains(event.target) && !button.contains(event.target)){
+if(!menu.contains(e.target)&&!button.contains(e.target)){
 menu.classList.remove("open");
 }
 
 });
-window.addEventListener("scroll", function(){
 
-const header = document.querySelector("header");
-const offset = window.pageYOffset;
+/* HEADER PARALLAX */
 
-header.style.backgroundPositionY = offset * 0.4 + "px";
+window.addEventListener("scroll",()=>{
+
+const header=document.querySelector("header");
+const offset=window.pageYOffset;
+
+header.style.backgroundPositionY=offset*0.4+"px";
 
 });
+
 </script>
 
 </body>

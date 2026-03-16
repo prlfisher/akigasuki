@@ -277,22 +277,14 @@ Select a post to read.
 </div>
 
 <div id="comments"></div>
-
 <div class="commentBox">
-
 <input id="name" placeholder="Your name">
-
 <textarea id="commentText" placeholder="Write comment"></textarea>
-
 <!-- hidden anti-spam field -->
 <input id="website" style="display:none">
-
 <button onclick="postComment()">Send</button>
-
 </div>
-
 </div>
-
 <div class="sidebar">
 <h3>Message</h3>
 <p>
@@ -300,12 +292,9 @@ This place is for feelings left unsaid.<br><br>
 Be kind with words.
 </p>
 </div>
-
 </div>
-
 <footer>
-
-Made with ❤️ | 告白 2026
+Made with 🖤 | 告白 2026
 
 <button id="adminBtn" onclick="adminLogin()">+</button>
 <button id="logoutBtn" onclick="adminLogout()">×</button>
@@ -450,30 +439,34 @@ closeEditor();
 
 /* LOAD POSTS */
 
-db.ref("posts").limitToLast(50).on("child_added",snap=>{
+/* FIXED LOAD POSTS */
+db.ref("posts").limitToLast(50).on("child_added", snap => {
+    const data = snap.val();
+    const key = snap.key;
 
-const data=snap.val();
-const key=snap.key;
+    // Create the function that both desktop and mobile will use
+    const createPostElement = () => {
+        const div = document.createElement("div");
+        div.className = "postItem";
+        div.innerText = data.featured ? "⚲" + data.title : data.title;
+        div.onclick = () => loadPost(key); // Re-assigning the click event
+        return div;
+    };
 
-const div=document.createElement("div");
-div.className="postItem";
+    const desktopDiv = createPostElement();
+    const mobileDiv = createPostElement(); // Create a fresh one for mobile
 
-div.innerText=data.featured?"📌 "+data.title:data.title;
+    // Add to Desktop
+    if (data.featured) {
+        document.getElementById("postList").prepend(desktopDiv);
+    } else {
+        document.getElementById("postList").appendChild(desktopDiv);
+    }
 
-div.onclick=()=>loadPost(key);
-
-if(data.featured){
-document.getElementById("postList").prepend(div);
-}else{
-document.getElementById("postList").appendChild(div);
-
-/* mobile list */
-
-const mobileDiv = div.cloneNode(true);
-document.getElementById("mobilePostList").appendChild(mobileDiv);
-}
-
+    // Add EVERY post to Mobile (Featured or not)
+    document.getElementById("mobilePostList").appendChild(mobileDiv);
 });
+
 
 /* LOAD POST */
 
@@ -632,4 +625,3 @@ header.style.backgroundPositionY = offset * 0.4 + "px";
 
 </body>
 </html>
-```

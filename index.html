@@ -245,7 +245,22 @@ font-size:18px;
 .hamburger{
 display:block;
 }
+#mobilePostsTitle{
+display:none;
+max-width:600px;
+margin:20px auto 5px auto;
+padding:0 15px;
+text-align:left;
+font-weight:bold;
+}
 
+@media(max-width:900px){
+
+#mobilePostsTitle{
+display:block;
+}
+
+}
 #mobilePostList{
 display:block;
 }
@@ -271,7 +286,7 @@ Be kind with words.
 <div class="homeMessage">
 Words left unsaid often stay the longest in the heart.
 </div>
-
+<h3 id="mobilePostsTitle">Posts</h3>
 <div id="mobilePostList"></div>
 <div id="mobileToggle" class="mobileToggle" style="display:none;" onclick="toggleMobilePosts()">
 ▼ Show more
@@ -351,7 +366,9 @@ let currentPost=null;
 let isAdmin=localStorage.getItem("admin")==="true";
 let commentListener=null;
 let pageLoaded=Date.now();
-
+let mobilePostCount = 0;
+let hiddenMobilePosts = [];
+let mobileExpanded = false;
 /* BANNED WORD FILTER */
 
 const bannedWords=[
@@ -451,44 +468,42 @@ const createPost=()=>{
 
 const div=document.createElement("div");
 div.className="postItem";
-div.innerText=data.featured ? "📌"+data.title : data.title;
+div.innerText=data.featured ? "📌 "+data.title : data.title;
 div.onclick=()=>loadPost(key);
 
 return div;
 
 };
 
-const desktop=createPost();
-const mobile=createPost();
+/* desktop post */
 
+const desktop=createPost();
 const list=document.getElementById("postList");
-const mobileList=document.getElementById("mobilePostList");
 
 data.featured ? list.prepend(desktop) : list.appendChild(desktop);
-data.featured ? mobileList.prepend(mobile) : mobileList.appendChild(mobile);
 
-});
-const mobileContainer = document.getElementById("mobilePostList");
+/* mobile post */
+
+const mobileDiv=createPost();
+const mobileContainer=document.getElementById("mobilePostList");
 
 mobilePostCount++;
 
-if (mobilePostCount <= 3) {
+if(mobilePostCount<=3){
 
-    if (data.featured) {
-        mobileContainer.prepend(mobileDiv);
-    } else {
-        mobileContainer.appendChild(mobileDiv);
-    }
+data.featured ? mobileContainer.prepend(mobileDiv) : mobileContainer.appendChild(mobileDiv);
 
-} else {
+}else{
 
-    mobileDiv.style.display = "none";
-    mobileContainer.appendChild(mobileDiv);
-    hiddenMobilePosts.push(mobileDiv);
+mobileDiv.style.display="none";
+mobileContainer.appendChild(mobileDiv);
 
-    document.getElementById("mobileToggle").style.display = "block";
+hiddenMobilePosts.push(mobileDiv);
+document.getElementById("mobileToggle").style.display="block";
 
 }
+
+});
 
 /* LOAD POST */
 

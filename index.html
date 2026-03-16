@@ -215,10 +215,17 @@ right:0;
 #mobilePostList{
 display:none;
 max-width:600px;
-margin:auto;
+margin:0 auto;
 padding:15px;
+text-align:left;
 }
-
+.mobileToggle{
+cursor:pointer;
+padding:8px;
+margin-top:10px;
+color:#ff9ecb;
+font-size:14px;
+}
 /* RESPONSIVE */
 
 @media(max-width:900px){
@@ -266,6 +273,9 @@ Words left unsaid often stay the longest in the heart.
 </div>
 
 <div id="mobilePostList"></div>
+<div id="mobileToggle" class="mobileToggle" style="display:none;" onclick="toggleMobilePosts()">
+▼ Show more
+</div>
 
 <div class="container">
 
@@ -359,7 +369,19 @@ return bannedWords.some(word=>lower.includes(word));
 function toggleMenu(){
 document.getElementById("mobileMenu").classList.toggle("open");
 }
+/*mobile toggle*/
+function toggleMobilePosts(){
 
+mobileExpanded = !mobileExpanded;
+
+hiddenMobilePosts.forEach(p=>{
+p.style.display = mobileExpanded ? "block" : "none";
+});
+
+document.getElementById("mobileToggle").innerText =
+mobileExpanded ? "▲ Show less" : "▼ Show more";
+
+}
 /* ADMIN */
 
 function adminLogin(){
@@ -404,7 +426,9 @@ const content=document.getElementById("postBody").value;
 if(!title||!content) return;
 
 const featured=confirm("Make this a featured post?");
-
+let mobilePostCount = 0;
+let hiddenMobilePosts = [];
+let mobileExpanded = false;
 db.ref("posts").push({
 title,
 content,
@@ -444,6 +468,27 @@ data.featured ? list.prepend(desktop) : list.appendChild(desktop);
 data.featured ? mobileList.prepend(mobile) : mobileList.appendChild(mobile);
 
 });
+const mobileContainer = document.getElementById("mobilePostList");
+
+mobilePostCount++;
+
+if (mobilePostCount <= 3) {
+
+    if (data.featured) {
+        mobileContainer.prepend(mobileDiv);
+    } else {
+        mobileContainer.appendChild(mobileDiv);
+    }
+
+} else {
+
+    mobileDiv.style.display = "none";
+    mobileContainer.appendChild(mobileDiv);
+    hiddenMobilePosts.push(mobileDiv);
+
+    document.getElementById("mobileToggle").style.display = "block";
+
+}
 
 /* LOAD POST */
 

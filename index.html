@@ -3,284 +3,602 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Love Confessions 💖</title>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BDXDV95V0F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<title>Confession</title>
 
-  gtag('config', 'G-BDXDV95V0F');
-</script>
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
 }
 
-/* ===== DARK BACKGROUND ===== */
 body{
-    min-height:100vh;
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    display:flex;
-    flex-direction:column;
-    overflow-x:hidden;
-    color:white;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+min-height:100vh;
+display:flex;
+flex-direction:column;
 }
 
-/* ===== LIGHT FLOATING HEARTS ===== */
-.heart{
-    position:fixed;
-    bottom:-50px;
-    font-size:20px;
-    color:rgba(255,255,255,0.9);
-    text-shadow:0 0 10px rgba(255,255,255,0.8);
-    animation:floatUp linear infinite;
-    pointer-events:none;
-}
+/* HEADER */
 
-@keyframes floatUp{
-    0%{
-        transform:translateY(0) scale(1);
-        opacity:0.8;
-    }
-    100%{
-        transform:translateY(-110vh) scale(1.6);
-        opacity:0;
-    }
-}
-
-/* ===== HEADER ===== */
 header{
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(10px);
-    padding:15px;
-    text-align:center;
-    font-weight:bold;
-    font-size:20px;
-    color:#ff9ecb;
-    box-shadow:0 5px 15px rgba(0,0,0,0.4);
+height:160px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+font-weight:bold;
+background:url("banner.png") center/cover fixed;
+box-shadow:0 6px 20px rgba(0,0,0,0.6);
 }
 
-/* ===== LAYOUT ===== */
+/* MESSAGE */
+
+.homeMessage{
+text-align:center;
+font-size:28px;
+padding:30px;
+max-width:900px;
+margin:auto;
+}
+
+/* LAYOUT */
+
 .container{
-    flex:1;
-    display:grid;
-    grid-template-columns:200px 1fr 200px;
-    gap:15px;
-    padding:15px;
+flex:1;
+display:grid;
+grid-template-columns:240px 1fr 240px;
+gap:20px;
+padding:20px;
 }
 
-/* ===== SIDEBARS ===== */
+/* SIDEBARS */
+
 .sidebar{
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:20px;
-    padding:15px;
-    backdrop-filter:blur(15px);
+background:rgba(255,255,255,0.06);
+border-radius:15px;
+padding:15px;
+backdrop-filter:blur(10px);
 }
 
-/* ===== MAIN APP ===== */
+.postItem{
+padding:8px;
+cursor:pointer;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.postItem:hover{
+color:#ff9ecb;
+}
+
+/* MAIN */
+
 .app{
-    background:rgba(255,255,255,0.08);
-    border-radius:25px;
-    padding:20px;
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.08);
+border-radius:15px;
+padding:20px;
 }
 
-textarea{
-    width:100%;
-    padding:10px;
-    border-radius:15px;
-    border:none;
-    background:rgba(255,255,255,0.1);
-    color:white;
+#postContent h2{
+margin-bottom:10px;
 }
 
-textarea::placeholder{
-    color:#ccc;
+/* COMMENTS */
+
+.comment{
+background:rgba(255,255,255,0.1);
+padding:10px;
+border-radius:10px;
+margin-top:10px;
+}
+
+/* COMMENT BOX */
+
+.commentBox{
+margin:25px auto 0 auto;
+max-width:500px;
+}
+#name{
+width:50%;
+}
+input,textarea{
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+margin-top:8px;
+background:rgba(255,255,255,0.1);
+color:white;
 }
 
 button{
-    margin-top:8px;
-    padding:8px 15px;
-    border:none;
-    border-radius:20px;
-    cursor:pointer;
-    background:#ff4d9d;
-    color:white;
-    transition:0.3s;
+margin-top:8px;
+padding:8px 14px;
+border:none;
+border-radius:20px;
+background:#ff4d9d;
+color:white;
+cursor:pointer;
 }
 
 button:hover{
-    background:#ff1f7a;
+background:#ff1f7a;
 }
 
-.message{
-    background:rgba(255,255,255,0.1);
-    padding:10px;
-    border-radius:15px;
-    margin-top:10px;
-    animation:fadeIn 0.5s ease;
+/* EDITOR */
+
+.editor{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:25px;
+border-radius:10px;
+width:400px;
+max-width:90%;
+z-index:10;
 }
 
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(10px);}
-    to{opacity:1; transform:translateY(0);}
-}
+/* FOOTER */
 
-.actions{
-    margin-top:5px;
-    display:flex;
-    gap:10px;
-}
-
-.featured{
-    background:rgba(255,77,157,0.2);
-    padding:10px;
-    border-radius:15px;
-    margin-bottom:15px;
-    text-align:center;
-    font-weight:bold;
-    border:1px solid rgba(255,255,255,0.2);
-}
-
-/* ===== FOOTER ===== */
 footer{
-    background:rgba(0,0,0,0.6);
-    padding:10px;
-    text-align:center;
-    font-size:14px;
-    color:#ff9ecb;
+background:rgba(0,0,0,0.6);
+padding:12px;
+text-align:center;
+position:relative;
 }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
-    .container{
-        grid-template-columns:1fr;
-    }
-    .sidebar{
-        display:none;
-    }
+#adminBtn{
+position:absolute;
+right:10px;
+bottom:6px;
+opacity:0.15;
+font-size:12px;
 }
+
+#adminBtn:hover{
+opacity:1;
+}
+#logoutBtn{
+position:absolute;
+right:50px;
+bottom:6px;
+opacity:0.15;
+font-size:12px;
+display:none;
+}
+
+#logoutBtn:hover{
+opacity:1;
+}
+/* MOBILE MENU */
+
+.hamburger{
+display:none;
+position:fixed;
+top:10px;
+right:15px;
+font-size:26px;
+cursor:pointer;
+}
+
+.mobileMenu{
+position:fixed;
+top:0;
+right:-260px;   /* hidden off screen */
+width:240px;
+height:100%;
+background:#111;
+padding:20px;
+transition:right 0.35s ease;
+z-index:1000;
+}
+.mobileMenu.open{
+right:0;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.container{
+grid-template-columns:1fr;
+}
+
+.sidebar{
+display:none;
+}
+
+.homeMessage{
+font-size:18px;
+}
+
+.hamburger{
+display:block;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>💖 Love Confessions</header>
+<header>告白</header>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+<div class="mobileMenu" id="mobileMenu">
+<p>
+This space is for unspoken feelings.<br><br>
+Be kind with words.
+</p>
+</div>
+
+<div class="homeMessage">
+Words left unsaid often stay the longest in the heart.
+</div>
 
 <div class="container">
-    
-    <div class="sidebar">
-        💌 Spread love <br><br>
-        ❤️ Be kind <br>
-        🌸 Stay soft
-    </div>
 
-    <div class="app">
-        <div id="featuredBox" class="featured">
-            💌 Daily Featured Confession Loading...
-        </div>
+<div class="sidebar">
+<h3>Posts</h3>
+<div id="postList"></div>
+</div>
 
-        <textarea id="input" rows="3" placeholder="Write your confession..."></textarea>
-        <button onclick="postConfession()">Post 💌</button>
+<div class="app">
 
-        <div id="messages"></div>
-    </div>
+<div id="postContent">
+Select a post to read.
+</div>
 
-    <div class="sidebar">
-        🌹 Anonymous space <br><br>
-        ✨ Positive vibes only
-    </div>
+<div id="comments"></div>
+
+<div class="commentBox">
+
+<input id="name" placeholder="Your name">
+
+<textarea id="commentText" placeholder="Write comment"></textarea>
+
+<!-- hidden anti-spam field -->
+<input id="website" style="display:none">
+
+<button onclick="postComment()">Send</button>
+
+</div>
+
+</div>
+
+<div class="sidebar">
+<h3>Message</h3>
+<p>
+This place is for feelings left unsaid.<br><br>
+Be kind with words.
+</p>
+</div>
 
 </div>
 
 <footer>
-    Made with ❤️ | Love Confessions 2026
+
+Made with ❤️ | 告白 2026
+
+<button id="adminBtn" onclick="adminLogin()">+</button>
+<button id="logoutBtn" onclick="adminLogout()">×</button>
+
 </footer>
 
+<div class="editor" id="editor">
+
+<h3>Create Post</h3>
+
+<input id="postTitle" placeholder="Post title">
+
+<textarea id="postBody" rows="6" placeholder="Write post..."></textarea>
+
+<button onclick="publishPost()">Publish</button>
+<button onclick="closeEditor()">Cancel</button>
+
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAVwHUPpyJPQBgvJE43DIDap0gQM-0oJHc",
-  authDomain: "akiga-suki.firebaseapp.com",
-  databaseURL: "https://akiga-suki-default-rtdb.firebaseio.com",
-  projectId: "akiga-suki"
+
+const firebaseConfig={
+apiKey:"AIzaSyAVwHUPpyJPQBgvJE43DIDap0gQM-0oJHc",
+authDomain:"akiga-suki.firebaseapp.com",
+databaseURL:"https://akiga-suki-default-rtdb.firebaseio.com",
+projectId:"akiga-suki"
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db=firebase.database();
 
-/* ===== Floating Hearts Generator ===== */
-function createHeart(){
-    const heart = document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(4+Math.random()*4)+"s";
-    heart.style.fontSize=(15+Math.random()*20)+"px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),8000);
+let currentPost=null;
+let isAdmin=false;
+/* restore admin session */
+
+if(localStorage.getItem("admin")==="true"){
+isAdmin=true;
 }
-setInterval(createHeart,800);
+let commentListener=null;
+let pageLoaded = Date.now();
 
-/* ===== Post Confession ===== */
-function postConfession(){
-    const text=document.getElementById("input").value;
-    if(!text.trim()) return;
+/*BANNED WORDS*/
+const bannedWords = [
+"fuck",
+"shit",
+"bitch",
+"asshole",
+"http://",
+"https://",
+"www."
+];
+function containsBannedWord(text){
 
-    db.ref("confessions").push({
-        message:text,
-        likes:0,
-        time:Date.now()
-    });
+const lower = text.toLowerCase();
 
-    document.getElementById("input").value="";
+for(let word of bannedWords){
+
+if(lower.includes(word)){
+return true;
 }
 
-/* ===== Display ===== */
-db.ref("confessions").limitToLast(50).on("child_added",snap=>{
-    const data=snap.val();
-    const key=snap.key;
+}
 
-    const div=document.createElement("div");
-    div.className="message";
+return false;
 
-    div.innerHTML=`
-        <div>${data.message}</div>
-        <div class="actions">
-            <button onclick="like('${key}',${data.likes})">❤️ ${data.likes}</button>
-            <button onclick="deletePost('${key}')">🗑 Admin</button>
-        </div>
-    `;
+}
+/* MOBILE MENU */
 
-    document.getElementById("messages").prepend(div);
+function toggleMenu(){
+
+const menu=document.getElementById("mobileMenu");
+
+menu.classList.toggle("open");
+
+}
+
+/* ADMIN LOGIN */
+
+function adminLogin(){
+
+const user=prompt("Username");
+const pass=prompt("Password");
+
+if(user==="admin" && pass==="admin123"){
+
+isAdmin=true;
+
+/* save login */
+localStorage.setItem("admin","true");
+
+document.getElementById("editor").style.display="block";
+
+}else{
+
+alert("Wrong login");
+
+}
+
+}
+
+function closeEditor(){
+document.getElementById("editor").style.display="none";
+}
+
+/*ADMIN LOGOUT*/
+function adminLogout(){
+
+localStorage.removeItem("admin");
+
+isAdmin=false;
+
+alert("Admin logged out");
+
+location.reload();
+
+}
+
+/* CREATE POST */
+
+function publishPost(){
+
+const title=document.getElementById("postTitle").value;
+const content=document.getElementById("postBody").value;
+
+if(!title||!content)return;
+
+const featured=confirm("Make this a featured post?");
+
+db.ref("posts").push({
+title:title,
+content:content,
+time:Date.now(),
+featured:featured
 });
 
-/* ===== Like ===== */
-function like(id,currentLikes){
-    db.ref("confessions/"+id).update({
-        likes:currentLikes+1
-    });
+closeEditor();
+
 }
 
-/* ===== Delete ===== */
-function deletePost(id){
-    const pass=prompt("Enter admin password:");
-    if(pass==="admin123"){
-        db.ref("confessions/"+id).remove();
-        location.reload();
-    }
+/* LOAD POSTS */
+
+db.ref("posts").limitToLast(50).on("child_added",snap=>{
+
+const data=snap.val();
+const key=snap.key;
+
+const div=document.createElement("div");
+div.className="postItem";
+
+div.innerText=data.featured?"📌 "+data.title:data.title;
+
+div.onclick=()=>loadPost(key);
+
+if(data.featured){
+document.getElementById("postList").prepend(div);
+}else{
+document.getElementById("postList").appendChild(div);
 }
+
+});
+
+/* LOAD POST */
+
+function loadPost(id){
+
+currentPost=id;
+
+db.ref("posts/"+id).once("value",snap=>{
+
+const data=snap.val();
+const date=new Date(data.time);
+
+let adminControls="";
+
+if(isAdmin){
+adminControls=`<button onclick="deletePost('${id}')">Delete Post</button>`;
+}
+
+document.getElementById("postContent").innerHTML=`
+
+<h2>${data.title}</h2>
+<small>${date.toLocaleString()}</small>
+
+<p style="margin-top:10px">${data.content}</p>
+
+<div style="margin-top:15px">${adminControls}</div>
+
+`;
+
+});
+
+loadComments(id);
+
+}
+
+/* DELETE POST */
+
+function deletePost(id){
+
+if(!confirm("Delete this post?")) return;
+
+db.ref("posts/"+id).remove();
+db.ref("comments/"+id).remove();
+
+document.getElementById("postContent").innerHTML="Post deleted.";
+
+}
+
+/* COMMENT */
+
+function postComment(){
+
+if(!currentPost) return;
+
+const name=document.getElementById("name").value;
+const text=document.getElementById("commentText").value;
+const botTrap=document.getElementById("website").value;
+
+/* honeypot bot protection */
+if(botTrap!=""){
+console.log("Bot blocked");
+return;
+}
+
+/* delay protection */
+if(Date.now()-pageLoaded < 3000){
+alert("Please wait a moment before commenting.");
+return;
+}
+
+/* banned word filter */
+if(containsBannedWord(text)){
+alert("Your comment contains blocked words.");
+return;
+}
+
+if(!name || !text) return;
+
+db.ref("comments/"+currentPost).push({
+name:name,
+text:text,
+time:Date.now()
+});
+
+document.getElementById("commentText").value="";
+document.getElementById("name").value="";
+
+}
+/* LOAD COMMENTS */
+
+function loadComments(id){
+
+document.getElementById("comments").innerHTML="";
+
+if(commentListener){
+db.ref("comments/"+currentPost).off("child_added",commentListener);
+}
+
+commentListener=db.ref("comments/"+id).on("child_added",snap=>{
+
+const d=snap.val();
+const key=snap.key;
+
+let del="";
+
+if(isAdmin){
+del=`<button onclick="deleteComment('${id}','${key}')">Delete</button>`;
+}
+
+const div=document.createElement("div");
+div.className="comment";
+
+div.innerHTML=`<b>${d.name}</b><br>${d.text}<br>${del}`;
+
+document.getElementById("comments").appendChild(div);
+
+});
+
+}
+
+/* DELETE COMMENT */
+
+function deleteComment(post,comment){
+
+if(!confirm("Delete comment?")) return;
+
+db.ref("comments/"+post+"/"+comment).remove();
+
+}
+/*ADMIN LOGOUT*/
+if(isAdmin){
+
+document.getElementById("logoutBtn").style.display="inline-block";
+
+}
+/*MOBILE HAMBURGER CLOSING*/
+document.addEventListener("click", function(event){
+
+const menu=document.getElementById("mobileMenu");
+const button=document.querySelector(".hamburger");
+
+if(!menu.contains(event.target) && !button.contains(event.target)){
+menu.classList.remove("open");
+}
+
+});
+
 </script>
 
 </body>
 </html>
+```

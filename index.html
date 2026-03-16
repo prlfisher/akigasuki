@@ -31,7 +31,13 @@ align-items:center;
 justify-content:center;
 font-size:32px;
 font-weight:bold;
-background:url("banner.png") center/cover fixed;
+color:white;
+
+background-image:url("banner.jpg");
+background-size:120% auto;
+background-position:center 30%;
+background-repeat:no-repeat;
+
 box-shadow:0 6px 20px rgba(0,0,0,0.6);
 }
 
@@ -229,7 +235,7 @@ display:block;
 
 <body>
 
-<header>告白</header>
+<header>告白 | CONFESSION</header>
 
 <div class="hamburger" onclick="toggleMenu()">☰</div>
 
@@ -596,7 +602,14 @@ menu.classList.remove("open");
 }
 
 });
+window.addEventListener("scroll", function(){
 
+const header = document.querySelector("header");
+const offset = window.pageYOffset;
+
+header.style.backgroundPositionY = offset * 0.4 + "px";
+
+});
 </script>
 
 </body>

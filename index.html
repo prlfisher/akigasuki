@@ -221,6 +221,20 @@ padding:15px;
 text-align:left;
 }
 
+/* MOBILE POSTS (hidden on desktop) */
+
+#mobilePostsTitle{
+display:none;
+}
+
+#mobilePostList{
+display:none;
+}
+
+#mobileToggle{
+display:none;
+}
+
 /* RESPONSIVE */
 
 @media (max-width:900px){
@@ -262,19 +276,6 @@ margin-top:10px;
 cursor:pointer;
 }
 
-}
-/* MOBILE POSTS (hidden on desktop) */
-
-#mobilePostsTitle{
-display:none;
-}
-
-#mobilePostList{
-display:none;
-}
-
-#mobileToggle{
-display:none;
 }
 </style>
 </head>
@@ -375,6 +376,7 @@ let currentPost=null;
 let isAdmin=localStorage.getItem("admin")==="true";
 let commentListener=null;
 let pageLoaded=Date.now();
+
 let mobilePostCount = 0;
 let hiddenMobilePosts = [];
 let mobileExpanded = false;
@@ -508,7 +510,10 @@ mobileDiv.style.display="none";
 mobileContainer.appendChild(mobileDiv);
 
 hiddenMobilePosts.push(mobileDiv);
+
+if(window.innerWidth <= 900){
 document.getElementById("mobileToggle").style.display="block";
+}
 
 }
 

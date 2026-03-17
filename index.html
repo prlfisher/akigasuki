@@ -44,6 +44,7 @@ background-repeat:no-repeat;
 box-shadow:0 6px 20px rgba(0,0,0,0.6);
 }
 
+
 /* HOME MESSAGE */
 
 .homeMessage{
@@ -219,16 +220,10 @@ margin:0 auto;
 padding:15px;
 text-align:left;
 }
-.mobileToggle{
-cursor:pointer;
-padding:8px;
-margin-top:10px;
-color:#ff9ecb;
-font-size:14px;
-}
+
 /* RESPONSIVE */
 
-@media(max-width:900px){
+@media (max-width:900px){
 
 .container{
 grid-template-columns:1fr;
@@ -245,28 +240,42 @@ font-size:18px;
 .hamburger{
 display:block;
 }
-#mobilePostsTitle{
-display:none;
-max-width:600px;
-margin:20px auto 5px auto;
-padding:0 15px;
-text-align:left;
-font-weight:bold;
-}
 
-@media(max-width:900px){
+/* MOBILE POSTS */
 
 #mobilePostsTitle{
 display:block;
+margin:20px 0 5px 15px;
+text-align:left;
 }
 
-}
 #mobilePostList{
 display:block;
+margin-left:15px;
+text-align:left;
+}
+
+#mobileToggle{
+display:block;
+margin-left:15px;
+margin-top:10px;
+cursor:pointer;
 }
 
 }
+/* MOBILE POSTS (hidden on desktop) */
 
+#mobilePostsTitle{
+display:none;
+}
+
+#mobilePostList{
+display:none;
+}
+
+#mobileToggle{
+display:none;
+}
 </style>
 </head>
 

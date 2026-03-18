@@ -95,7 +95,10 @@ padding:20px;
 #postContent h2{
 margin-bottom:10px;
 }
-
+#postContent p{
+line-height:1.7;
+white-space:normal;
+}
 /* COMMENTS */
 
 .comment{
@@ -540,7 +543,7 @@ document.getElementById("postContent").innerHTML=`
 
 <h2>${data.title}</h2>
 <small>${date.toLocaleString()}</small>
-<p style="margin-top:10px">${data.content}</p>
+<p style="margin-top:10px">${data.content.replace(/\n/g,"<br>")}</p>
 <div style="margin-top:15px">${adminControls}</div>
 
 `;
